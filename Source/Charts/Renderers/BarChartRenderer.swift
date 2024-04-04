@@ -378,9 +378,14 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
-            
-            context.fill(barRect)
-            
+
+            //context.fill(barRect)
+            // 注：实现圆角/胶囊柱子。手动注掉上方代码，改为以下代码
+            // 参考：https://stackoverflow.com/questions/37920237/rounded-bars-in-ios-charts
+            let bezierPath = UIBezierPath(roundedRect: barRect, cornerRadius: barRect.width / 2)
+            context.addPath(bezierPath.cgPath)
+            context.drawPath(using: .fill)
+
             if drawBorder
             {
                 context.setStrokeColor(borderColor.cgColor)
